@@ -1,23 +1,40 @@
-import * as React from 'react';
+import React, { Component } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import * as Progress from 'react-native-progress';
+import AsyncStorage from '@react-native-community/async-storage';
 
-interface IState{
+//Utilities Import
+import { getAsyncStorageData, setAsyncStorage, removeAsyncStorage } from '../Utils/AsyncStorageManager'
+
+interface IState {
     isAnimating: boolean
 }
 
-class SplashScreen extends React.Component {
+interface IProps {
+    navigation: any
+}
+
+class SplashScreen extends Component<IProps, IState> {
     constructor(props: any) {
         super(props);
         this.state = {
             isAnimating: true
         }
     }
-    componentDidMount() {
-        setTimeout(()=>{
-            this.setState({isAnimating:false});
-            this.props.navigation.navigate('LogInScreen');
-        }, 4000);
+    async componentDidMount() {
+        let userProfile;
+        AsyncStorage.getItem('userProfile', (error, result) => {
+            userProfile = JSON.parse(result);
+        })
+        setTimeout(() => {
+            this.setState({ isAnimating: false });
+            if(userProfile !== undefined && userProfile !== null){
+                this.props.navigation.navigate('DrawerNavigator');
+            }else{
+                this.props.navigation.navigate('LogInScreen');
+                //this.props.navigation.navigate('DrawerNavigator', {userProfile : 33});
+            }
+        }, 1000);
     }
 
     render() {
@@ -31,7 +48,7 @@ class SplashScreen extends React.Component {
                     progress={1}
                     width={200}
                     indeterminate={this.state.isAnimating}
-                    indeterminateAnimationDuration={4000}
+                    indeterminateAnimationDuration={1000}
                     animationType='timing'
                     height={15} />
             </View>
@@ -51,7 +68,7 @@ const styles = StyleSheet.create({
     ImageStyle: {
         width: 200,
         height: 200,
-        marginBottom:50,
+        marginBottom: 50,
     },
     loadingGIF: {
         width: 100,
