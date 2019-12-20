@@ -23,6 +23,18 @@ class Networking{
     getUserProfile(userId){
         return instance.get('users/'+userId);
     }
+    getUserFollowers(userId){
+        return instance.get('users/'+userId+'/followers');
+    }
+    getUserFollowing(userId){
+        return instance.get('users/'+userId+'/following');
+    }
+    getUserRepos(userId){
+        return instance.get('users/'+userId+'/repos');
+    }
+    getRepoLanguage(repoName, userId){
+        return instance.get('repos/'+userId+'/'+repoName+'/languages')
+    }
 }
 
 export default new Networking()

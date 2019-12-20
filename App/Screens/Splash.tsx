@@ -3,9 +3,6 @@ import { View, StyleSheet, Image } from 'react-native';
 import * as Progress from 'react-native-progress';
 import AsyncStorage from '@react-native-community/async-storage';
 
-//Utilities Import
-import { getAsyncStorageData, setAsyncStorage, removeAsyncStorage } from '../Utils/AsyncStorageManager'
-
 interface IState {
     isAnimating: boolean
 }
@@ -28,15 +25,13 @@ class SplashScreen extends Component<IProps, IState> {
         })
         setTimeout(() => {
             this.setState({ isAnimating: false });
-            if(userProfile !== undefined && userProfile !== null){
+            if (userProfile !== undefined && userProfile !== null) {
                 this.props.navigation.navigate('DrawerNavigator');
-            }else{
+            } else {
                 this.props.navigation.navigate('LogInScreen');
-                //this.props.navigation.navigate('DrawerNavigator', {userProfile : 33});
             }
         }, 1000);
     }
-
     render() {
         return (
             <View style={styles.container}>
